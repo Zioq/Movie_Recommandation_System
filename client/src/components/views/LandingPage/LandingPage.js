@@ -10,20 +10,38 @@ function LandingPage() {
   const [Movies, SetMovies] = useState([]);
   // Save main Movie Image
   const [MainMovieimg, setMainMovieimg] = useState(null);
+  // Save the page
+  const [CurrentPage,setCurrentPage] = useState(0);
+
 
   //Get the Movie-Data from API
   useEffect(() => {
+
     const movieurl = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=1`;
 
+    fecthMovies(movieurl);
+
+  }, []);
+
+  // Function for Fetch Moives
+  const fecthMovies = (movieurl) => {
     //fecth the movie api
     fetch(movieurl)
       .then((response) => response.json())
       .then((movieData) => {
         console.log(movieData);
-        SetMovies(movieData.results);
+        SetMovies([...Movies,...movieData.results]);
         setMainMovieimg(movieData.results[0]);
+        setCurrentPage(movieData.page);
       });
-  }, []);
+  }
+
+  // Function to get the seconde page of movies list
+  const loadMoreHandler = (e) => {
+    e.preventDefault();
+    const movieurl = `${API_URL}movie/popular?api_key=${API_KEY}&language=en-US&page=${CurrentPage + 1}`;
+    fecthMovies(movieurl);
+  };
 
   return (
     <div style={{ width: "100%", margin: "0" }}>
@@ -56,7 +74,7 @@ function LandingPage() {
       </div>
 
       <div style={{ display: "flex", justifyContent: "center" }}>
-        <button> SHOW MORE</button>
+        <button onClick={loadMoreHandler}> SHOW MORE</button>
       </div>
     </div>
   );

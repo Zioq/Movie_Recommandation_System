@@ -1,6 +1,7 @@
 import React from 'react';
 import {Row, Col} from 'antd';
 
+// Grid section for loading movie img
 function Grid(props) {
     return (
         <Col lg={6} md={8} xs={24}>
