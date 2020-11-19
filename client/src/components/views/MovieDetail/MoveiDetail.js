@@ -5,6 +5,7 @@ import MainImage from "../LandingPage/MainImage";
 import MovieInfo from "./MovieInfo";
 import Grid from "../LandingPage/Grid";
 import { Row } from "antd";
+import Favorite from "./Favorite";
 
 function MoveiDetail(props) {
   // Get the :id parameter thorugh props.match.params
@@ -59,6 +60,12 @@ function MoveiDetail(props) {
 
       {/* Body */}
       <div style={{ width: "85%", margin: "1rem auto" }}>
+
+        <div style={{display:'flex', justifyContent:'flex-end'}}>
+            <Favorite movieInfo={Movie} movieId ={movieId} userFrom={localStorage.getItem("userId")}/>
+        </div>
+
+
         {/* Movie Info */}
         <MovieInfo movie={Movie} />
 
