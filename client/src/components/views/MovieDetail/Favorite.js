@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React,{useEffect,useState} from "react";
 import axios from "axios";
 
 
@@ -10,6 +10,10 @@ function Favorite(props) {
     const moviePost = props.movieInfo.backdrop_path;
     const movieRunTime = props.movieInfo.runtime;
 
+
+    // Save data how many users clicked favorite
+    const [FavoriteNumber, setFavoriteNumber] = useState(0);
+    const [Favorited, setFavorited] = useState(false);
 
     // Get the data from MongoDB about how many ppl click the `like` using a Axios
     useEffect(()=> {
@@ -29,7 +33,7 @@ function Favorite(props) {
                 // If there are response, console response correspond to body
                 console.log(response.data);
                 if(response.data.success) {
-                    
+                  setFavoriteNumber(response.data.favoriteNumber);
                 } else {
                     alert('Failed to get favorite data from DB');
                 }
@@ -41,6 +45,7 @@ function Favorite(props) {
             .then(response=>{
                if(response.data.success) {
                   console.log("favorited", response.data);
+                  setFavorited(response.data.favorited);
                } else {
                 alert("Failed to get the response from server");
                }
@@ -53,7 +58,7 @@ function Favorite(props) {
 
   return (
     <div>
-      <button>Add to my favorite</button>
+      <button> { Favorited ? "Remove from My List": "Add to My List"} {FavoriteNumber}</button>
     </div>
   );
 }
