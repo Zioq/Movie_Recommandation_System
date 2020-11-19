@@ -62,6 +62,7 @@ function LandingPage() {
             {Movies && Movies.map((movie,index)=> (
                 <React.Fragment>
                     <Grid 
+                        landingPage
                         img={movie.poster_path? `${IMAGE_BASE_URL}/w400${movie.poster_path}`: null}
                         movieId={movie.id}
                         movieName={movie.original_title}
@@ -69,8 +70,6 @@ function LandingPage() {
                 </React.Fragment>
             ))}
         </Row>
-
-
       </div>
 
       <div style={{ display: "flex", justifyContent: "center" }}>

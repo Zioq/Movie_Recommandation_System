@@ -1,67 +1,100 @@
-import React,{useEffect,useState} from 'react';
+import React, { useEffect, useState } from "react";
 import { API_URL, API_KEY, IMAGE_BASE_URL } from "../../Config";
-import { json } from 'body-parser';
+import { json } from "body-parser";
 import MainImage from "../LandingPage/MainImage";
 import MovieInfo from "./MovieInfo";
-
+import Grid from "../LandingPage/Grid";
+import { Row } from "antd";
 
 function MoveiDetail(props) {
+  // Get the :id parameter thorugh props.match.params
+  let movieId = props.match.params.movieId;
 
-    // Get the :id parameter thorugh props.match.params
-    let movieId = props.match.params.movieId;
+  // Save the data
+  const [Movie, setMovie] = useState([]);
+  const [Actors, setActors] = useState([]);
+  const [Toggle, setToggle] = useState(false);
 
-    // Save the data
-    const [Movie, setMovie] = useState([]);
+  // Do when component rendered
+  useEffect(() => {
+    //Check props of match
+    console.log(props.match);
+    //console.log(movieId);
+
+    //API end-point for Actors
+    let endPointActor = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`;
+
+    //API end-point for SingleMovieInfo
+    let endPointInfo = `${API_URL}movie/${movieId}?api_key=${API_KEY}`;
+
+    fetch(endPointInfo)
+      .then((response) => response.json())
+      .then((singleMovieData) => {
+        //console.log(singleMovieData);
+        setMovie(singleMovieData);
+      });
+
+    //fecth movie actor API
+    fetch(endPointActor)
+      .then((response) => response.json())
+      .then((movieActorData) => {
+        console.log(movieActorData);
+        setActors(movieActorData.cast);
+      });
+  }, []);
 
 
-    // Do when component rendered
-    useEffect(()=> {
+  const changeToggle = () => {
+    setToggle(!Toggle);
+  } 
 
-        //Check props of match 
-        console.log(props.match);
-        //console.log(movieId);
+  return (
+    <div>
+      {/* Header */}
+      <MainImage
+        image={`${IMAGE_BASE_URL}/w1280${Movie.backdrop_path}`}
+        title={Movie.original_title}
+        description={Movie.overview}
+      />
 
-        //API end-point for Actors
-        let endPointActor = `${API_URL}movie/${movieId}/credits?api_key=${API_KEY}`;
+      {/* Body */}
+      <div style={{ width: "85%", margin: "1rem auto" }}>
+        {/* Movie Info */}
+        <MovieInfo movie={Movie} />
 
-        //API end-point for SingleMovieInfo
-        let endPointInfo = `${API_URL}movie/${movieId}?api_key=${API_KEY}`;
-        
-        fetch(endPointInfo)
-            .then(response =>response.json())
-            .then(singleMovieData=> {
-                console.log(singleMovieData);
-                setMovie(singleMovieData);
-            })
-    })
+        <br />
 
-
-    return (
-        <div>
-            {/* Header */}
-            <MainImage 
-                 image={`${IMAGE_BASE_URL}/w1280${Movie.backdrop_path}`}
-                 title={Movie.original_title}
-                 description={Movie.overview}
-            />
-
-            {/* Body */}
-            <div style={{width: '85%', margin: '1rem auto'}}>
-
-                {/* Movie Info */}
-                <MovieInfo movie={Movie}/>
-
-                <br />
-                {/* Actros Grid */}
-
-                <div style={{display:'flex', justifyContent:'center', margin: '2rem'}}>
-                    <button> SHOW MORE</button>
-
-                </div>
-            </div>
-            
+        <div
+          style={{ display: "flex", justifyContent: "center", margin: "2rem" }}
+        >
+          <button onClick={changeToggle}> VIEW ALL ACTORS</button>
         </div>
-    )
+
+
+        {/* Actros Grid */}
+        {Toggle &&  
+                    <Row gutter={[10, 10]}>
+                        {Actors &&
+                        Actors.map((actor, index) => (
+                            <React.Fragment>
+                            <Grid
+                                img={
+                                actor.profile_path
+                                    ? `${IMAGE_BASE_URL}/w400${actor.profile_path}`
+                                    : null
+                                }
+                                actorName={actor.name}
+                            />
+                            </React.Fragment>
+                        ))}
+                    </Row>
+        }
+                    
+
+        
+      </div>
+    </div>
+  );
 }
 
-export default MoveiDetail
+export default MoveiDetail;
