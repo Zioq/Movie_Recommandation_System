@@ -15,24 +15,37 @@ function Favorite(props) {
     useEffect(()=> {
 
 
-        // body composition which front-end wnat to get 
+        // body composition which front-end wnat to post
         let body = {
-            userFrom : userFrom,
-            movieId: movieId
+            userFrom,
+            movieId
         }
 
-
         // node server end-point(YOU CAN ASSIGN END-POINT WHAT YOU WANT)
-        // request to server and get the response from the DB
-        // second parameter is the data composition what we want to get from DB
+        // request to server and get the response from the Server where connected with MongoDB
+        // second parameter is the data composition what we want to send to Server
         axios.post('/api/favorite/favoriteNumber', body)
             .then(response=>{
+                // If there are response, console response correspond to body
                 console.log(response.data);
                 if(response.data.success) {
+                    
                 } else {
                     alert('Failed to get favorite data from DB');
                 }
             })
+
+
+        // Another Axio post to check favorited or not
+        axios.post('/api/favorite/favorited', body)
+            .then(response=>{
+               if(response.data.success) {
+                  console.log("favorited", response.data);
+               } else {
+                alert("Failed to get the response from server");
+               }
+
+            });
 
 
     },[]);

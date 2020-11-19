@@ -19,7 +19,7 @@ function MoveiDetail(props) {
   // Do when component rendered
   useEffect(() => {
     //Check props of match
-    console.log(props.match);
+    console.log("match", props.match);
     //console.log(movieId);
 
     //API end-point for Actors
