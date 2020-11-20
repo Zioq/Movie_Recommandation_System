@@ -15,15 +15,20 @@ function Favorite(props) {
     const [FavoriteNumber, setFavoriteNumber] = useState(0);
     const [Favorited, setFavorited] = useState(false);
 
+      // body composition which front-end wnat to post
+      let body = {
+        userFrom: userFrom,
+        movieId: movieId,
+        //Add more composition to save DB 
+        movieTitle: movieTitle,
+        moviePost: moviePost,
+        movieRunTime: movieRunTime
+
+    }
+
+ 
     // Get the data from MongoDB about how many ppl click the `like` using a Axios
     useEffect(()=> {
-
-
-        // body composition which front-end wnat to post
-        let body = {
-            userFrom,
-            movieId
-        }
 
         // node server end-point(YOU CAN ASSIGN END-POINT WHAT YOU WANT)
         // request to server and get the response from the Server where connected with MongoDB
@@ -55,10 +60,36 @@ function Favorite(props) {
 
     },[]);
 
+    const addListHandler = () => {
+      // Validation to check `favoirted` or not
+      if(Favorited) {
+        axios.post('/api/favorite/removeFromList',body)
+          .then(response=> {
+            if(response.data.success) {
+              setFavoriteNumber(FavoriteNumber -1)
+              setFavorited(!Favorited)
+            } else {
+              alert("Failed to remove from list");
+            }
+          })
+      } else {
+        axios.post('/api/favorite/addToFavoriteList',body)
+        .then(response=> {
+          if(response.data.success) {
+              setFavoriteNumber(FavoriteNumber +1) 
+              setFavorited(!Favorited)
+          } else {
+            alert("Failed to add to list");
+          }
+        })
+      }
+    }
+
+
 
   return (
     <div>
-      <button> { Favorited ? "Remove from My List": "Add to My List"} {FavoriteNumber}</button>
+      <button onClick={addListHandler}> { Favorited ? "Remove from My List": "Add to My List"} {FavoriteNumber}</button>
     </div>
   );
 }

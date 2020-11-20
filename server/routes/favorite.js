@@ -56,4 +56,43 @@ router.post('/favorited', (req,res) =>{
 
 });
 
+
+router.post('/removeFromList', (req,res) =>{
+    //Delete data from MongoDB using a `findOneAndDelete` method with condition (matched Data with movieId and userFrom)
+    Favorite.findOneAndDelete({
+        movieId: req.body.movieId,
+        userFrom: req.body.userFrom})
+        .exec((err,info)=>{
+            if(err) {
+                return res.status(400).send(err)
+            } else {
+                res.status(200).json({
+                    success: true,
+                    info
+                })
+            }
+        })
+
+});
+
+router.post('/addToFavoriteList', (req,res) =>{
+
+    // Add to mongoDB what client post
+    //req.body
+
+    // First create documnet instance `favorite` by Model `Favorite` with data what client post
+    const favorite = new Favorite (req.body);
+    //Save data
+    favorite.save((err,doc) => {
+        if(err) {
+            return res.status(400).send(err)
+        } else {
+            return res.status(200).json({success: true})
+        }
+    })
+ 
+
+});
+
+
 module.exports = router;
