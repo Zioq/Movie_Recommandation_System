@@ -35,7 +35,7 @@ function Favorite(props) {
         // second parameter is the data composition what we want to send to Server
         axios.post('/api/favorite/favoriteNumber', body)
             .then(response=>{
-                // If there are response, console response correspond to body
+                // If there are response, console reponse correspond to body
                 console.log(response.data);
                 if(response.data.success) {
                   setFavoriteNumber(response.data.favoriteNumber);
