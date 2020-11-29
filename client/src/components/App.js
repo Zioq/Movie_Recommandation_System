@@ -6,7 +6,6 @@ import LandingPage from "./views/LandingPage/LandingPage.js";
 import LoginPage from "./views/LoginPage/LoginPage.js";
 import RegisterPage from "./views/RegisterPage/RegisterPage.js";
 import NavBar from "./views/NavBar/NavBar";
-import Footer from "./views/Footer/Footer";
 import MoveiDetail from "./views/MovieDetail/MoveiDetail";
 import FavoriteListPage from "./views/favoriteListPage/FavoriteListPage";
 
@@ -28,7 +27,6 @@ function App() {
           <Route exact path="/favoritelist" component={Auth(FavoriteListPage, true)} />
         </Switch>
       </div>
-      <Footer />
     </Suspense>
   );
 }

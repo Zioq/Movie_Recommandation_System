@@ -106,7 +106,7 @@ router.post('/getFavoriteList', (req,res) => {
                         info
                     });
                 }
-            });
+            }); 
 });
 
 
@@ -120,8 +120,8 @@ router.post('/removeFromList', (req,res) => {
                 success: true
             });
         }
-    })
-})
+    });
+});
 
 
 module.exports = router;

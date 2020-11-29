@@ -16,16 +16,6 @@ mongoose
   .then(() => console.log("DB Connected"))
   .catch((err) => console.log(err));
 
-
-/*
-const connect = mongoose.connect(config.mongoURI,
-  {
-    useNewUrlParser: true, useUnifiedTopology: true,
-    useCreateIndex: true, useFindAndModify: false
-  })
-  .then(() => console.log('MongoDB Connected...'))
-  .catch(err => console.log(err));
-*/
 app.use(cors())
 
 //to not get any deprecation warning or error
